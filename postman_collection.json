@@ -1,0 +1,495 @@
+{
+    "info": {
+        "_postman_id": "a5a9a8b9-d25c-4d95-8c7e-d4f87c8da15e",
+        "name": "Product Management System API",
+        "description": "API collection for the Product Management System with authentication",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Login User",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "email",
+                                    "value": "admin@example.com",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "password",
+                                    "value": "password123",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "login"]
+                        },
+                        "description": "Login a user and get an API token."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get User Info",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{sanctum_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/user",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "user"]
+                        },
+                        "description": "Get information about the authenticated user."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout User",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{sanctum_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/logout",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "logout"]
+                        },
+                        "description": "Logout the user and revoke the API token."
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Authentication endpoints for managing users and tokens"
+        },
+        {
+            "name": "Products",
+            "item": [
+                {
+                    "name": "Get All Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/products",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "products"]
+                        },
+                        "description": "Get a list of all active products. No authentication required."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products with Pagination",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/products?paginate=true&per_page=10&category=Electronics&min_price=100&max_price=1000&search=phone&sort_by=price&sort_direction=desc",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "products"],
+                            "query": [
+                                {
+                                    "key": "paginate",
+                                    "value": "true",
+                                    "description": "Enable pagination"
+                                },
+                                {
+                                    "key": "per_page",
+                                    "value": "10",
+                                    "description": "Number of items per page"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "Electronics",
+                                    "description": "Filter by category"
+                                },
+                                {
+                                    "key": "min_price",
+                                    "value": "100",
+                                    "description": "Minimum price filter"
+                                },
+                                {
+                                    "key": "max_price",
+                                    "value": "1000",
+                                    "description": "Maximum price filter"
+                                },
+                                {
+                                    "key": "search",
+                                    "value": "phone",
+                                    "description": "Search term for name or category"
+                                },
+                                {
+                                    "key": "sort_by",
+                                    "value": "price",
+                                    "description": "Sort field (id, name, price, category, status, created_at)"
+                                },
+                                {
+                                    "key": "sort_direction",
+                                    "value": "desc",
+                                    "description": "Sort direction (asc, desc)"
+                                }
+                            ]
+                        },
+                        "description": "Get a paginated list of active products with filtering options. No authentication required."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Product by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/products/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "products", "1"]
+                        },
+                        "description": "Get details of a specific product by its ID. No authentication required."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Product (Sanctum Auth)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{sanctum_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Test Product",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "99.99",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "Test Category",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "Active",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": "/path/to/image.jpg"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/products",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "products"]
+                        },
+                        "description": "Create a new product using Sanctum authentication."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Product (Legacy Token & Sanctum Auth)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{sanctum_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "IF12I1234567890@#",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Test Product",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "99.99",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "Test Category",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "Active",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": "/path/to/image.jpg"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/products",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "products"]
+                        },
+                        "description": "Create a new product using the legacy API token & Sanctum authentication."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Product (Sanctum Auth)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{sanctum_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Updated Product",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "129.99",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "Updated Category",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "Active",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": "/path/to/updated_image.jpg",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/products/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "products", "1"]
+                        },
+                        "description": "Update an existing product using Sanctum authentication."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Product (Legacy Token & Sanctum Auth)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{sanctum_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "IF12I1234567890@#",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Updated Product",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "129.99",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "Updated Category",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "Active",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": "/path/to/updated_image.jpg",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/products/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "products", "1"]
+                        },
+                        "description": "Update an existing product using the legacy API token & Sanctum authentication."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Product (Sanctum Auth)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{sanctum_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/products/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "products", "1"]
+                        },
+                        "description": "Delete a product using Sanctum authentication."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Product (Legacy Token & Sanctum Auth)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{sanctum_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "IF12I1234567890@#",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/products/1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "products", "1"]
+                        },
+                        "description": "Delete a product using the legacy API token & Sanctum authentication."
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Endpoints for managing products"
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [""]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [""]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://127.0.0.1:8000",
+            "type": "string"
+        },
+        {
+            "key": "sanctum_token",
+            "value": "YOUR_SANCTUM_TOKEN_HERE",
+            "type": "string"
+        }
+    ]
+}
